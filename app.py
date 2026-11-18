@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import os
+
 from fastapi import FastAPI
+
 from consulting_agent.memory import ConsultingSessionManager
 from consulting_agent.observability import METRICS
 from consulting_agent.schemas import ChatRequest, ChatResponse

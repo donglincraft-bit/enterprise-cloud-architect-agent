@@ -7,6 +7,7 @@ import re
 from typing import Any
 
 from google.genai import types
+
 from consulting_agent.observability import METRICS
 
 logger = logging.getLogger("consulting_agent.guardrails")
@@ -68,7 +69,7 @@ def before_model_guardrail(callback_context: Any, llm_request: Any) -> Any | Non
                         ],
                     )
                 )
-            except Exception:  # pragma: no cover
+            except (ImportError, TypeError, ValueError):  # pragma: no cover
                 return None
     return None
 

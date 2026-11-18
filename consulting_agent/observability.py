@@ -51,7 +51,7 @@ def configure_observability(service_name: str = "enterprise-cloud-architect-agen
                 from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
 
                 provider.add_span_processor(BatchSpanProcessor(CloudTraceSpanExporter()))
-            except Exception as exc:  # pragma: no cover - fallback when running offline
+            except (ImportError, OSError, RuntimeError) as exc:  # pragma: no cover
                 root_logger.warning("Falling back to local trace provider: %s", exc)
         elif os.environ.get("OTEL_CONSOLE_EXPORT", "FALSE").upper() == "TRUE":
             provider.add_span_processor(BatchSpanProcessor(ConsoleSpanExporter()))

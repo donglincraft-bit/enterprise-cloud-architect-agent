@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 from typing import Any
+
 from google.adk.tools.tool_context import ToolContext
+
 from consulting_agent.schemas import WorkloadSizingInput
 
 _CUD_DISCOUNT_RATES: dict[int, float] = {

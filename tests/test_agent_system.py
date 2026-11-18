@@ -1,6 +1,7 @@
 """Unit tests verifying tools, guardrails, observability, and ADK multi-agent wiring."""
 
 from types import SimpleNamespace
+
 from fastapi.testclient import TestClient
 
 from app import app

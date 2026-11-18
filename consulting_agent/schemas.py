@@ -1,6 +1,7 @@
 """Pydantic v2 data contracts for tool inputs, API payloads, and structured outputs."""
 
 from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
