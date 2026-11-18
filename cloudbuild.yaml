@@ -1,0 +1,44 @@
+steps:
+  - name: "python:3.12-slim"
+    id: "lint-and-unit-tests"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        pip install --no-cache-dir -r requirements.txt
+        ruff check consulting_agent tests app.py
+        pytest -v
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "build-container-image"
+    args:
+      - "build"
+      - "-t"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/consulting-copilot:$SHORT_SHA"
+      - "."
+
+  - name: "gcr.io/cloud-builders/docker"
+    id: "push-container-image"
+    args:
+      - "push"
+      - "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/consulting-copilot:$SHORT_SHA"
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "deploy-cloud-run"
+    entrypoint: "gcloud"
+    args:
+      - "run"
+      - "deploy"
+      - "enterprise-consulting-copilot"
+      - "--image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/consulting-copilot:$SHORT_SHA"
+      - "--region=${_REGION}"
+      - "--platform=managed"
+      - "--set-env-vars=GOOGLE_GENAI_USE_VERTEXAI=TRUE,GOOGLE_CLOUD_PROJECT=$PROJECT_ID,GOOGLE_CLOUD_LOCATION=global,OTEL_EXPORTER_GCP_TRACE=TRUE"
+      - "--no-allow-unauthenticated"
+
+substitutions:
+  _REGION: "us-central1"
+  _REPO: "agent-containers"
+
+options:
+  logging: CLOUD_LOGGING_ONLY

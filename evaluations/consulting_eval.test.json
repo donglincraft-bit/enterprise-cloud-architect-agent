@@ -1,0 +1,41 @@
+[
+  {
+    "name": "quick_finops_tco_lookup",
+    "data": [
+      {
+        "query": "Estimate monthly GCP TCO for 64 vCPUs, 20 TB storage, and 2 GPUs on a 3-year commitment.",
+        "expected_tool_use": [
+          {
+            "tool_name": "estimate_cloud_workload_tco",
+            "tool_input": {
+              "monthly_vcpu": 64,
+              "storage_tb": 20.0,
+              "gpu_count": 2,
+              "commitment_years": 3
+            }
+          }
+        ],
+        "reference": "Provides monthly and annual USD costs reflecting a 55% 3-year CUD discount."
+      }
+    ]
+  },
+  {
+    "name": "fsi_compliance_lookup",
+    "data": [
+      {
+        "query": "What mandatory Google Cloud security controls apply to a banking workload in asia-east1 handling PII?",
+        "expected_tool_use": [
+          {
+            "tool_name": "check_compliance_requirements",
+            "tool_input": {
+              "industry": "fsi",
+              "data_residency_region": "asia-east1",
+              "handles_pii": true
+            }
+          }
+        ],
+        "reference": "Lists CMEK/HSM, VPC Service Controls, Assured Workloads, and Model Armor."
+      }
+    ]
+  }
+]
